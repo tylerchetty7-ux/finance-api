@@ -7,7 +7,29 @@ const prisma = require('../lib/prisma');
 */
 router.get('/', async (req, res) => {
   try {
+    const { category, minAmount } = req.query;
+
+    // build dynamic filter
+    const filters = {};
+
+    if (category) {
+      filters.category = category;
+    }
+
+    if (minAmount) {
+      const parsedAmount = Number(minAmount);
+
+      if (Number.isNaN(parsedAmount)) {
+        return res.status(400).json({ error: 'minAmount must be a number' });
+      }
+
+      filters.amount = {
+        gte: parsedAmount,
+      };
+    }
+
     const transactions = await prisma.transaction.findMany({
+      where: filters,
       orderBy: { id: 'asc' },
     });
 
