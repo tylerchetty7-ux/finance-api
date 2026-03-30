@@ -43,6 +43,54 @@ router.get('/', async (req, res) => {
 });
 
 /*
+    GET /transactions/total
+*/
+router.get('/total', async (req, res) => {
+  try {
+    const result = await prisma.transaction.aggregate({
+      _sum: {
+        amount: true,
+      },
+    });
+
+    return res.json({
+      totalAmount: result._sum.amount ?? 0,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'failed to calculate total amount' });
+  }
+});
+
+/*
+    GET /transactions/by-category
+*/
+router.get('/by-category', async (req, res) => {
+  try {
+    const grouped = await prisma.transaction.groupBy({
+      by: ['category'],
+      _sum: {
+        amount: true,
+      },
+      orderBy: {
+        category: 'asc',
+      },
+    });
+
+    const formatted = grouped.map(item => ({
+      category: item.category,
+      total: item._sum.amount ?? 0,
+    }));
+
+    return res.json({
+      count: formatted.length,
+      data: formatted,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'failed to group transactions by category' });
+  }
+});
+
+/*
     GET /transactions/:id
 */
 router.get('/:id', async (req, res) => {
