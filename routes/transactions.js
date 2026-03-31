@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
   try {
     const { category, minAmount } = req.query;
 
-    // build dynamic filter
     const filters = {};
 
     if (category) {
@@ -38,6 +37,7 @@ router.get('/', async (req, res) => {
       data: transactions,
     });
   } catch (error) {
+    console.error('GET /transactions failed:', error);
     return res.status(500).json({ error: 'failed to fetch transactions' });
   }
 });
@@ -48,15 +48,14 @@ router.get('/', async (req, res) => {
 router.get('/total', async (req, res) => {
   try {
     const result = await prisma.transaction.aggregate({
-      _sum: {
-        amount: true,
-      },
+      _sum: { amount: true },
     });
 
     return res.json({
       totalAmount: result._sum.amount ?? 0,
     });
   } catch (error) {
+    console.error('GET /transactions/total failed:', error);
     return res.status(500).json({ error: 'failed to calculate total amount' });
   }
 });
@@ -68,12 +67,8 @@ router.get('/by-category', async (req, res) => {
   try {
     const grouped = await prisma.transaction.groupBy({
       by: ['category'],
-      _sum: {
-        amount: true,
-      },
-      orderBy: {
-        category: 'asc',
-      },
+      _sum: { amount: true },
+      orderBy: { category: 'asc' },
     });
 
     const formatted = grouped.map(item => ({
@@ -86,6 +81,7 @@ router.get('/by-category', async (req, res) => {
       data: formatted,
     });
   } catch (error) {
+    console.error('GET /transactions/by-category failed:', error);
     return res.status(500).json({ error: 'failed to group transactions by category' });
   }
 });
@@ -111,6 +107,7 @@ router.get('/:id', async (req, res) => {
 
     return res.json({ data: found });
   } catch (error) {
+    console.error('GET /transactions/:id failed:', error);
     return res.status(500).json({ error: 'failed to fetch transaction' });
   }
 });
@@ -146,6 +143,7 @@ router.post('/', async (req, res) => {
       data: newTransaction,
     });
   } catch (error) {
+    console.error('POST /transactions failed:', error);
     return res.status(500).json({ error: 'failed to create transaction' });
   }
 });
@@ -192,6 +190,7 @@ router.put('/:id', async (req, res) => {
       data: updated,
     });
   } catch (error) {
+    console.error('PUT /transactions/:id failed:', error);
     return res.status(500).json({ error: 'failed to update transaction' });
   }
 });
@@ -224,6 +223,7 @@ router.delete('/:id', async (req, res) => {
       data: deleted,
     });
   } catch (error) {
+    console.error('DELETE /transactions/:id failed:', error);
     return res.status(500).json({ error: 'failed to delete transaction' });
   }
 });
