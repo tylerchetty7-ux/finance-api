@@ -7,6 +7,26 @@ This project demonstrates backend engineering fundamentals including RESTful API
 
 ---
 
+## Deployment (Cloud)
+
+This API is designed to be deployed on a cloud platform with a managed PostgreSQL database.
+
+**Planned Deployment Stack:**
+- Backend: Render (Node.js service)
+- Database: Render PostgreSQL
+
+Once deployed, a live base URL will be available here.
+
+---
+
+## 🌐 Live API
+
+Base URL:
+```http
+(coming soon)
+```
+
+
 ## Tech Stack
 * Node.js
 * Express
@@ -84,6 +104,15 @@ Server will run at:
 
 ```bash
 http://localhost:3000
+```
+
+### Production Notes
+
+- In production, the `DATABASE_URL` is configured using environment variables in the cloud platform.
+- Database migrations are applied using:
+
+```bash
+npx prisma migrate deploy
 ```
 
 ---
@@ -249,6 +278,7 @@ Example response:
 - Dynamic query filtering
 - Aggregation and grouping logic
 - Input validation and error handling
+- Cloud-ready backend architecture and environment configuration
 
 ---
 
