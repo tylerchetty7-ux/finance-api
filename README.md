@@ -1,30 +1,21 @@
 # Finance API
 Backend API for tracking and analyzing financial transactions.
 
-A RESTful backend API built with Node.js, Express, PostgreSQL, and Prisma for managing financial transactions.
-
-This project demonstrates backend engineering fundamentals including RESTful API design, database integration, query filtering, and analytics endpoints.
-
 ---
 
-## Deployment (Cloud)
-
-This API is designed to be deployed on a cloud platform with a managed PostgreSQL database.
-
-**Planned Deployment Stack:**
-- Backend: Render (Node.js service)
-- Database: Render PostgreSQL
-
-Once deployed, a live base URL will be available here.
-
----
-
-## 🌐 Live API
+## Live API
 
 Base URL:
 ```http
-(coming soon)
+https://finance-api-ws.onrender.com
 ```
+
+---
+
+## Overview
+A RESTful backend API built with Node.js, Express, PostgreSQL, and Prisma for managing financial transactions.
+
+This project demonstrates backend engineering fundamentals including RESTful API design, database integration, query filtering, analytics endpoints, and cloud deployment. Designed to reflect real-world backend and cloud deployment practices.
 
 
 ## Tech Stack
@@ -32,6 +23,7 @@ Base URL:
 * Express
 * PostgreSQL
 * Prisma ORM
+* Render (Cloud Deployment)
 
 ---
 
@@ -59,16 +51,26 @@ Base URL:
 ```bash
 finance-api/
 │
-├── server.js
-├── prisma/
-│ ├── schema.prisma
-│ └── migrations/
+├── app.js                 # Express app configuration
+├── server.js              # Server entry point
+│
 ├── routes/
-│ └── transactions.js
+│   └── transactions.js    # API route handlers
+│
 ├── lib/
-│ └── prisma.js
-├── prisma.config.ts
+│   └── prisma.js          # Prisma client instance
+│
+├── prisma/
+│   ├── schema.prisma      # Database schema
+│   └── migrations/        # Prisma migrations
+│
+├── tests/
+│   └── app.test.js        # Integration tests (Jest + Supertest)
+│
+├── prisma.config.ts       # Prisma configuration
 ├── package.json
+├── package-lock.json
+├── .gitignore
 └── README.md
 ```
 
@@ -106,14 +108,24 @@ Server will run at:
 http://localhost:3000
 ```
 
-### Production Notes
+---
 
-- In production, the `DATABASE_URL` is configured using environment variables in the cloud platform.
-- Database migrations are applied using:
+## Deployment
 
-```bash
-npx prisma migrate deploy
-```
+This API is deployed on Render with a managed PostgreSQL database.
+
+**Architecture:**
+- Backend: Render Web Service
+- Database: Render PostgreSQL
+- Environment variables used for secure configuration
+
+**Production Notes:**
+- Uses `DATABASE_URL` environment variable
+- Migrations applied using:
+
+  ```bash
+  npx prisma migrate deploy
+  ```
 
 ---
 
@@ -270,6 +282,29 @@ Example response:
 
 ---
 
+## Testing
+This project includes integration tests using Jest and Supertest.
+
+Tests cover:
+- Core CRUD operations
+- Filtering logic
+- Analytics endpoints
+
+Run tests with:
+
+```bash
+npm test
+```
+
+---
+
+## Scripts
+- `npm start` — start the server
+- `npm test` — run integration tests
+
+---
+
+
 ## Key Concepts Demonstrated
 - RESTful API design
 - Modular routing with Express
@@ -290,7 +325,5 @@ Example response:
 ---
 
 ## Future Improvements
-- Automated testing (Jest and Supertest)
 - Authentication with JWT
 - Pagination for larger datasets
-- Deployment (Render or Railway)
