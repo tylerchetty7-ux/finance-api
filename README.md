@@ -4,14 +4,6 @@ A production-style RESTful API for tracking and analyzing financial transactions
 
 ---
 
-## Live API
-
-Base URL:
-```http
-https://finance-api-ws.onrender.com
-```
-
----
 
 ## Overview
 
