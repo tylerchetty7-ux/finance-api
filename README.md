@@ -1,5 +1,6 @@
 # Finance API
-Backend API for tracking and analyzing financial transactions.
+
+A production-style RESTful API for tracking and analyzing financial transactions.
 
 ---
 
@@ -13,17 +14,24 @@ https://finance-api-ws.onrender.com
 ---
 
 ## Overview
-A RESTful backend API built with Node.js, Express, PostgreSQL, and Prisma for managing financial transactions.
 
-This project demonstrates backend engineering fundamentals including RESTful API design, database integration, query filtering, analytics endpoints, and cloud deployment. Designed to reflect real-world backend and cloud deployment practices.
+A production-style RESTful API built to demonstrate backend engineering and cloud deployment skills.
 
+The application provides CRUD operations, transaction analytics, query filtering, automated database migrations with Prisma, integration testing using Jest and Supertest, Docker-based local development, and deployment to Render using a managed PostgreSQL database.
+
+---
 
 ## Tech Stack
-* Node.js
-* Express
-* PostgreSQL
-* Prisma ORM
-* Render (Cloud Deployment)
+
+- Node.js
+- Express
+- PostgreSQL
+- Prisma ORM
+- Docker
+- Docker Compose
+- Jest
+- Supertest
+- Render (Cloud Deployment)
 
 ---
 
@@ -51,23 +59,26 @@ This project demonstrates backend engineering fundamentals including RESTful API
 ```bash
 finance-api/
 │
-├── app.js                 # Express app configuration
-├── server.js              # Server entry point
+├── app.js
+├── server.js
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
 │
 ├── routes/
-│   └── transactions.js    # API route handlers
+│   └── transactions.js
 │
 ├── lib/
-│   └── prisma.js          # Prisma client instance
+│   └── prisma.js
 │
 ├── prisma/
-│   ├── schema.prisma      # Database schema
-│   └── migrations/        # Prisma migrations
+│   ├── schema.prisma
+│   └── migrations/
 │
 ├── tests/
-│   └── app.test.js        # Integration tests (Jest + Supertest)
+│   └── app.test.js
 │
-├── prisma.config.ts       # Prisma configuration
+├── prisma.config.ts
 ├── package.json
 ├── package-lock.json
 ├── .gitignore
@@ -112,20 +123,87 @@ http://localhost:3000
 
 ## Deployment
 
-This API is deployed on Render with a managed PostgreSQL database.
+The API is deployed on Render with a managed PostgreSQL database.
 
-**Architecture:**
+### Architecture
+
 - Backend: Render Web Service
 - Database: Render PostgreSQL
-- Environment variables used for secure configuration
+- Local development: Docker Compose
+- Environment variables are used for secure configuration.
 
-**Production Notes:**
-- Uses `DATABASE_URL` environment variable
-- Migrations applied using:
+### Production Notes
 
-  ```bash
-  npx prisma migrate deploy
-  ```
+- Uses the `DATABASE_URL` environment variable.
+- Prisma migrations are automatically applied during deployment.
+
+Deployment command:
+
+```bash
+npx prisma migrate deploy
+```
+
+---
+
+## Docker
+
+The project is fully containerized for local development using Docker Compose.
+
+### Build and start
+
+```bash
+docker compose up --build
+```
+
+This starts:
+
+- Node.js API container
+- PostgreSQL database container
+
+The API will be available at:
+
+```text
+http://localhost:3000
+```
+
+### Stop the application
+
+```bash
+docker compose down
+```
+
+### Remove containers and database volume
+
+```bash
+docker compose down -v
+```
+
+---
+
+## Request flow
+
+```text
+                HTTP Client
+                     │
+                     ▼
+             Express Application
+                     │
+                     ▼
+          Express Router (/transactions)
+                     │
+                     ▼
+              Prisma ORM Client
+                     │
+                     ▼
+              PostgreSQL Database
+                     │
+                     ▼
+              JSON Response
+```
+
+For local development, the API and PostgreSQL run in separate Docker containers managed by Docker Compose.
+
+In production, the API is deployed as a Render Web Service connected to a managed Render PostgreSQL database.
 
 ---
 
@@ -306,24 +384,34 @@ npm test
 
 
 ## Key Concepts Demonstrated
-- RESTful API design
-- Modular routing with Express
-- PostgreSQL integration
-- Prisma ORM and migrations
+
+- RESTful API development
+- Express routing and middleware
+- Modular application architecture
+- PostgreSQL database integration
+- Prisma ORM and database migrations
 - Dynamic query filtering
-- Aggregation and grouping logic
+- Aggregate and group-by database queries
 - Input validation and error handling
-- Cloud-ready backend architecture and environment configuration
+- Integration testing with Jest and Supertest
+- Docker containerization
+- Docker Compose orchestration
+- Cloud deployment with Render
+- Environment variable management
 
 ---
 
 ## Notes
-- Data is stored in PostgreSQL, so it persists across server restarts
+- Transaction data is persisted in PostgreSQL
 - Prisma handles database access and schema migrations
 - Environment variables are stored in .env and should not be pushed to GitHub
 
 ---
 
 ## Future Improvements
-- Authentication with JWT
-- Pagination for larger datasets
+
+- JWT authentication and authorization
+- Pagination and sorting
+- CI/CD pipeline with GitHub Actions
+- AWS deployment (ECS, App Runner, or EC2)
+- API documentation with Swagger/OpenAPI
